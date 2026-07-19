@@ -18,21 +18,26 @@ in {
     # ══════════════════════════════════════════════════════════════════════════
     packages = with pkgs; [
       steam
+      appimage-run
       blender
       vlc
       # davinci-resolve
       qownnotes
       zip
+      ripgrep
       xz
       unzip
       cargo
       gcc
       telegram-desktop
       nil
+      texliveFull
+      pandoc
+      google-chrome
 
       # Editores
-      unstable.code-cursor
       neovim
+      android-tools
 
       # Desarrollo
       git
@@ -73,6 +78,27 @@ in {
       kdePackages.kaccounts-providers
       kdePackages.accounts-qt
       kdePackages.bluedevil
+
+      (python3.withPackages (ps:
+        with ps; [
+          ipykernel
+          notebook
+          jupyterlab
+          pyzmq
+          numpy
+          pandas
+          matplotlib
+          scikit-learn
+          scipy
+          seaborn
+          statsmodels
+          sympy
+          tensorflow
+          pandoc
+          keras
+          torch
+          wandb
+        ]))
     ];
 
     # ══════════════════════════════════════════════════════════════════════════

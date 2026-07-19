@@ -94,6 +94,8 @@
   programs.firefox.enable = true;
   programs.zsh.enable = true;
   programs.kdeconnect.enable = true;
+  programs.partition-manager.enable = true;
+  programs.kde-pim.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
