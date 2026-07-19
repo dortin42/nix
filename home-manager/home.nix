@@ -116,7 +116,7 @@ in {
       ".oh-my-zsh".source = "${pkgs.oh-my-zsh}/share/oh-my-zsh";
     };
 
-    stateVersion = "25.11";
+    stateVersion = "26.05";
   };
 
   # ════════════════════════════════════════════════════════════════════════════
