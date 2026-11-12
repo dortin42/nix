@@ -8,6 +8,7 @@
     ./packages/apps.nix
     ./packages/kde.nix
     ./packages/python.nix
+    ./plasma.nix
   ];
 
   home.username = "dani";

@@ -18,6 +18,12 @@
     # Base de nix-index para flakes. El índice sigue nixos-unstable.
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
+    # WordCraft, GridCraft y DeckCraft. No están en nixos-26.05.
+    artcraft.url = "github:J0schu/artcraft.nix";
+
+    # Zen no está en nixpkgs. El flake trae el binario y sus librerías.
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
   };
 
   outputs = { self, nixpkgs, home-manager, nix-flatpak, nix-index-database, ... } @ inputs: {

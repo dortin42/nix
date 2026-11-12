@@ -42,6 +42,10 @@ Se borra `init.lua` de la raíz del repo. Neovim sigue saliendo de `inputs.dotfi
 
 `flake.nix` conserva `nixpkgs` (`nixos-26.05`), `home-manager` (`release-26.05`, `follows = "nixpkgs"`), `nix-flatpak` (`v0.7.0`), `dotfiles` (`github:dortin42/dotfiles`, `flake = false`) y `nix-index-database` (`github:nix-community/nix-index-database`, `follows = "nixpkgs"`). La base de `nix-index` sigue el canal unstable: un comando ausente puede apuntar a un paquete un poco más nuevo que el de 26.05.
 
+`artcraft` (`github:J0schu/artcraft.nix`) trae WordCraft, GridCraft y DeckCraft. Esos tres no están en `nixos-26.05`. El flake empaqueta los AppImage oficiales y no sigue el `nixpkgs` del sistema.
+
+`zen-browser` (`github:0xc000022070/zen-browser-flake`) instala el canal beta de Zen. Tampoco está en nixpkgs y no sigue el `nixpkgs` del sistema: el binario necesita las librerías de la revisión con la que se empaqueta.
+
 Se elimina el input `nixpkgs-unstable`.
 
 `outputs` sigue pasando `specialArgs = { inherit inputs; }`. Los módulos del sistema son:
@@ -146,7 +150,7 @@ El módulo `nix-index-database` activa `programs.nix-index` y desactiva `program
 ### flatpak.nix
 
 - `services.flatpak.enable = true`
-- `services.flatpak.packages = [ "net.waterfox.waterfox" ]`
+- `services.flatpak.packages = [ ]`
 - `services.flatpak.update.onActivation = true`
 
 ### users.nix
@@ -176,7 +180,9 @@ Módulo de NixOS, firma `{ inputs, ... }:`. Recibe `inputs` por `specialArgs` de
 - `home.stateVersion = "26.05"`
 - `programs.home-manager.enable = true`
 - `systemd.user.startServices = "sd-switch"`
-- imports: `./dotfiles.nix`, `./git.nix`, `./packages/tools.nix`, `./packages/apps.nix`, `./packages/kde.nix`, `./packages/python.nix`
+- imports: `./dotfiles.nix`, `./git.nix`, `./packages/tools.nix`, `./packages/apps.nix`, `./packages/kde.nix`, `./packages/python.nix`, `./plasma.nix`
+
+`plasma.nix` desactiva la indexación de Baloo y su plugin en KRunner, y deja Alt+Tab en iconos grandes, sin desenfoque y con latencia baja del compositor. No desinstala KMail ni Kontact.
 
 ### dotfiles.nix
 
@@ -201,7 +207,7 @@ Los cuatro módulos de paquetes tienen firma `{ pkgs, ... }:` y asignan `home.pa
 
 ### packages/apps.nix
 
-`appimage-run`, `blender`, `vlc`, `qownnotes`, `telegram-desktop`, `texliveFull`, `pandoc`, `google-chrome`, `libreoffice-qt`.
+`appimage-run`, `blender`, `vlc`, `qownnotes`, `telegram-desktop`, `texliveFull`, `pandoc`, `google-chrome`, `tor-browser`, el paquete `default` de `inputs.zen-browser`, más `wordcraft`, `gridcraft` y `deckcraft` desde `inputs.artcraft.packages`.
 
 ### packages/kde.nix
 
@@ -227,6 +233,8 @@ Las cuatro listas se concatenan en `home.packages`.
 - La segunda entrada de `kdePackages.kdepim-addons`.
 - `pandoc` dentro del entorno Python.
 - Comentarios de plantilla y paquetes comentados (`thunderbird`, `davinci-resolve`).
+- `libreoffice-qt`. Lo sustituyen WordCraft, GridCraft y DeckCraft.
+- `librewolf-bin` y `mullvad-browser`. El navegador de cada día es Zen; Tor queda para ocultar la IP.
 
 `allowUnfree` del import de unstable desaparece con ese import. El `nixpkgs.config.allowUnfree` del sistema sigue cubriendo los paquetes de usuario porque `home-manager.useGlobalPkgs = true`.
 

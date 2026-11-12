@@ -3,9 +3,7 @@
 {
   services.flatpak = {
     enable = true;
-    packages = [
-      "net.waterfox.waterfox"
-    ];
+    packages = [ ];
     update.onActivation = true;
   };
 }
