@@ -5,7 +5,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     # Flatpaks declarativos
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.7.0";
@@ -15,9 +14,13 @@
       url = "github:dortin42/dotfiles";
       flake = false;
     };
+
+    # Base de nix-index para flakes. El índice sigue nixos-unstable.
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-flatpak, ... } @ inputs: {
+  outputs = { self, nixpkgs, home-manager, nix-flatpak, nix-index-database, ... } @ inputs: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
@@ -25,12 +28,8 @@
         ./nixos/configuration.nix
         home-manager.nixosModules.home-manager
         nix-flatpak.nixosModules.nix-flatpak
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = { inherit inputs; };
-          home-manager.users.dani = import ./home-manager/home.nix;
-        }
+        nix-index-database.nixosModules.nix-index
+        ./nixos/home-manager.nix
       ];
     };
   };
